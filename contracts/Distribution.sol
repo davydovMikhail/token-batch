@@ -18,7 +18,14 @@ contract Distribution is AccessControl {
         _setupRole(ADMIN_ROLE, msg.sender);
     }
 
-    
+    /**
+     * @dev Function for the distribution of ERC20 standard tokens
+     *
+     * @param _maecenas Tokens will be debited from this address during the distribution process. Previously, the address must call approve to the address of this contract
+     * @param _token The address of the token to be distributed
+     * @param _recipients Array with recipient addresses
+     * @param _amounts Array with amounts that will receive addresses from the array _recipients
+     */
     function distributeERC20(address _maecenas, address _token, address[] calldata _recipients, uint256[] calldata _amounts) external {
         require(hasRole(ADMIN_ROLE, msg.sender), "You do not have access rights.");
         uint256 length = _recipients.length;
@@ -29,6 +36,12 @@ contract Distribution is AccessControl {
         }
     }
 
+    /**
+     * @dev Function for native currency distribution
+     *
+     * @param _recipients Array with recipient addresses
+     * @param _amounts Array with amounts that will receive addresses from the array _recipients
+     */
     function distributeETH(address[] calldata _recipients, uint256[] calldata _amounts) external payable {
         uint256 msgValue = msg.value;
         require(msgValue > 0, "You sent 0 ETH");
